@@ -1,0 +1,22 @@
+[global_config]
+  enabled_plugins = TerminalShot, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  suppress_multiple_term_dialog = True
+[keybindings]
+  broadcast_off = <Alt>f
+  broadcast_group = <Alt>g
+[profiles]
+  [[default]]
+    background_darkness = 0.7
+    background_type = transparent
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      position = 1000:00
+      size = 950, 1000
+      parent = ""
+[plugins]

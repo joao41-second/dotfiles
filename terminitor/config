@@ -8,6 +8,7 @@
   [[default]]
     background_darkness = 0.7
     background_type = transparent
+	 font = OpenDyslexic 12
 [layouts]
   [[default]]
     [[[child1]]]

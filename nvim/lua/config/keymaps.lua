@@ -5,3 +5,5 @@ vim.keymap.set("o", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 
 -- Atalho para gerar documentação de função
 vim.api.nvim_set_keymap("n", "<leader>n", ":Neogen func<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<leader>p", ":Telescope buffers", { noremap = true, silent = true })

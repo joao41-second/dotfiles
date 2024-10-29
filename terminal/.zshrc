@@ -134,6 +134,8 @@ setopt complete_aliases
 
 # Make sure to export the function so it's available in your shell
 
+export PATH="$PATH:/usr/bin/clang"
+
 
 alias code='gtk-launch com.visualstudio.code.desktop 2>/dev/null'
 alias pasta='nautilus .'
@@ -151,3 +153,5 @@ alias av='cd "/home/jperpect/Desktop/avalia"'
 alias phi='cd "/home/jperpect/Desktop/philo"'
 alias cf='cd "/home/jperpect/.config"'
 alias ex='exit' 
+
+

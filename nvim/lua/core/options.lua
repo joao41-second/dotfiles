@@ -20,20 +20,20 @@ opt.softtabstop = 4
 opt.shiftwidth = 4
 opt.expandtab = false
 
--- Buffer tabs 
+-- Buffer tabs
 opt.showtabline = 2
-opt.winbar = '=%=%k %r %h %m %f %w'
+opt.winbar = "=%=%k %r %h %m %f %w"
 
 -- Indentation
 opt.autoindent = true
 opt.smartindent = true
 
 -- Line Wrapping
-opt.whichwrap = '<,>'
+opt.whichwrap = "<,>"
 opt.wrap = false
 
 -- C Indentation
-opt.cindent = true
+opt.cindent = false
 
 -- Windows
 opt.splitbelow = true
@@ -45,7 +45,7 @@ opt.equalalways = false
 opt.cursorline = true
 --opt.cursor = true
 
--- opt.colorcolumn = '80';  -- Overriden for NeoColumn
+vim.g.autoformat = false -- opt.colorcolumn = '80';  -- Overriden for NeoColumn
 
 -- sync with system Clipboard (through + register)
 opt.clipboard = "unnamedplus"

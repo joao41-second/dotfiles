@@ -9,8 +9,8 @@ else
 	echo "nao modou .zshrc"
 fi
 
-rm ~/.config/terminator/config
-ln -s $PATHS/terminitor/config ~/.config/terminator/config
+#rm ~/.config/terminator/config
+#ln -s $PATHS/terminitor/config ~/.config/terminator/config
 
 rm -rf ~/.config/nvim
 ln -s $PATHS/nvim/ ~/.config/nvim
@@ -23,3 +23,7 @@ ln -s $PATHS/tmux/.tmux.conf ~/.tumx.conf
 
 rm -rf ~/.tmux.conf.local
 ln -s $PATHS/tmux/.tmux.conf.local ~/.tmux.conf.local
+
+cd ~
+
+ln -s -f .tmux/.tmux.conf

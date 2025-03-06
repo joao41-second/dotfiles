@@ -31,102 +31,61 @@ require('packer').startup(function(use)
     requires = { "nvim-lua/plenary.nvim" }
   }
 
-  use {
+  use 
+  {
 	 "akinsho/bufferline.nvim",
-	  requires = "nvim-tree/nvim-web-devicons"
-	}
-
-
+	 requires = "nvim-tree/nvim-web-devicons"
+  }
  --use 'morhetz/gruvbox'  -- Tema popular para Neovim
- use 'folke/tokyonight.nvim'  -- Tema azul escuro
+  use 'folke/tokyonight.nvim'  -- Tema azul escuro
 
- use 'nvim-lualine/lualine.nvim'  -- Barra de status bonita e customizável
+  use 'nvim-lualine/lualine.nvim'  -- Barra de status bonita e customizável
+-- inport mansion
+use {
+  'hrsh7th/nvim-cmp',
+  requires = {
+    'hrsh7th/cmp-nvim-lsp',   -- LSP completions
+    'hrsh7th/cmp-buffer',      -- Completions do buffer
+    'hrsh7th/cmp-path',        -- Completions de caminhos
+    'hrsh7th/cmp-cmdline',     -- Completions na linha de comando
+    'L3MON4D3/LuaSnip',        -- Snippets engine
+    'saadparwaiz1/cmp_luasnip' -- Snippets completions
+  },
+  config = function()
+    local cmp = require('cmp')
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          require('luasnip').lsp_expand(args.body)
+        end,
+      },
+      mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),  -- Ativar autocompletar manualmente
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Aceitar sugestão
+        ['<Tab>'] = cmp.mapping.select_next_item(), -- Ir para a próxima sugestão
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(), -- Ir para a sugestão anterior
+      }),
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' }, -- Sugestões do LSP
+        { name = 'luasnip' },  -- Snippets
+      }, {
+        { name = 'buffer' },   -- Sugestões do buffer atual
+        { name = 'path' },     -- Sugestões de caminhos de ficheiros
+      })
+    })
+  end
+}
+
+  use 'nvim-treesitter/nvim-treesitter' -- Syntax Highlight avançado
 
 
 end)
 
 
-require("telescope").setup({
-  pickers = {
-    buffers = {
-      sort_mru = true, -- Ordena pelos mais recentemente usados
-      ignore_current_buffer = true, -- Evita mostrar o buffer atual
-      mappings = {
-        i = { ["<c-x>"] = "delete_buffer" }, -- Ctrl + X fecha buffer
-      },
-    },
-  },
-})
-
--- config  multi file leve
-require("bufferline").setup({
-  options = {
-    diagnostics = "nvim_lsp",
-    show_buffer_close_icons = false,
-    show_close_icon = false,
-    separator_style = "slant",
-  },
-})
-
-require('lualine').setup({
-  options = {
-    theme = 'tokyonight',  -- Usa o tema gruvbox na barra de status também
-    section_separators = {'', ''},
-    component_separators = {'', ''},
-  },
-  sections = {
-    lualine_a = {'mode'},  -- Mostra o modo atual (normal, insert, etc.)
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'},
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'filetype'},
-    lualine_y = {},
-    lualine_z = {},
-  },
-  tabline = {},
-  extensions = {'fugitive'}
-})
+require("config/configs")
+require("config/lsp_config")
+require("keybind/key_bind")
 
 
-
--- defenir o tema do nvim 
-vim.cmd("colorscheme tokyonight")  -- Define o tema gruvbox
-vim.opt.background = "dark"  -- Ou "light" dependendo da tua preferência
-
--- keymap  multi file level
-vim.api.nvim_set_keymap("n", "<S-h>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<S-l>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
--- keymap move in the screan split 
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>q", ":bdelete<CR>", { noremap = true, silent = true })
-
-
-
--- Atalhos do Telescope
-vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", { noremap = true, silent = true }) -- Mostra buffers abertos
--- nvim-tree
-vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-
-
-require("bufferline").setup({
-  options = {
-    diagnostics = "nvim_lsp",
-    show_buffer_close_icons = false,
-    show_close_icon = false,
-    separator_style = "slant",
-  },
-})
 
 

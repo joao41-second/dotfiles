@@ -16,4 +16,7 @@ int main()
 
 { 
 	write(1,"las",strlen("las"));
+	
+
+
 }

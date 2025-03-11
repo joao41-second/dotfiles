@@ -114,6 +114,12 @@ _G.packer_plugins = {
     path = "/home/jperpect/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
+  ["mason.nvim"] = {
+    config = { "\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nmason\frequire\0" },
+    loaded = true,
+    path = "/home/jperpect/.local/share/nvim/site/pack/packer/start/mason.nvim",
+    url = "https://github.com/williamboman/mason.nvim"
+  },
   ["monolithic.nvim"] = {
     loaded = true,
     path = "/home/jperpect/.local/share/nvim/site/pack/packer/start/monolithic.nvim",
@@ -164,6 +170,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: mason.nvim
+time([[Config for mason.nvim]], true)
+try_loadstring("\27LJ\2\n3\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\nmason\frequire\0", "config", "mason.nvim")
+time([[Config for mason.nvim]], false)
 -- Config for: nvim-cmp
 time([[Config for nvim-cmp]], true)
 try_loadstring("\27LJ\2\nC\0\1\4\0\4\0\a6\1\0\0'\3\1\0B\1\2\0029\1\2\0019\3\3\0B\1\2\1K\0\1\0\tbody\15lsp_expand\fluasnip\frequireó\3\1\0\n\0\27\00006\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\6\0005\4\4\0003\5\3\0=\5\5\4=\4\a\0039\4\b\0009\4\t\0049\4\n\0045\6\f\0009\a\b\0009\a\v\aB\a\1\2=\a\r\0069\a\b\0009\a\14\a5\t\15\0B\a\2\2=\a\16\0069\a\b\0009\a\17\aB\a\1\2=\a\18\0069\a\b\0009\a\19\aB\a\1\2=\a\20\6B\4\2\2=\4\b\0039\4\21\0009\4\22\0044\6\3\0005\a\23\0>\a\1\0065\a\24\0>\a\2\0064\a\3\0005\b\25\0>\b\1\a5\b\26\0>\b\2\aB\4\3\2=\4\22\3B\1\2\1K\0\1\0\1\0\1\tname\tpath\1\0\1\tname\vbuffer\1\0\1\tname\fluasnip\1\0\1\tname\rnvim_lsp\fsources\vconfig\f<S-Tab>\21select_prev_item\n<Tab>\21select_next_item\t<CR>\1\0\1\vselect\2\fconfirm\14<C-Space>\1\0\4\14<C-Space>\0\n<Tab>\0\t<CR>\0\f<S-Tab>\0\rcomplete\vinsert\vpreset\fmapping\fsnippet\1\0\3\fsources\0\fsnippet\0\fmapping\0\vexpand\1\0\1\vexpand\0\0\nsetup\bcmp\frequire\0", "config", "nvim-cmp")

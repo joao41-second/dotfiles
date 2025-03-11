@@ -76,6 +76,13 @@ use {
   end
 }
 
+use {
+  "williamboman/mason.nvim",
+  config = function()
+    require("mason").setup()
+  end
+}
+
   use 'nvim-treesitter/nvim-treesitter' -- Syntax Highlight avançado
 
 
@@ -83,7 +90,7 @@ end)
 
 
 require("config/configs")
-require("config/lsp_config")
+--require("config/lsp_config")
 require("keybind/key_bind")
 
 

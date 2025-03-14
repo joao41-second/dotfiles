@@ -4,11 +4,11 @@ end, { desc = "Alternar Neo-tree" })
 
 vim.opt.background = "dark" 
 -- move tabs
-vim.api.nvim_set_keymap('n', '<S-h>', '<Cmd>BufferNext<CR>', { desc = "tab  next"})
-vim.api.nvim_set_keymap('n', '<S-l>', '<Cmd>BufferPrevious<CR>', { desc = "tab previos"})
+vim.api.nvim_set_keymap('n', '<S-l>', '<Cmd>BufferNext<CR>', { desc = "tab  next"})
+vim.api.nvim_set_keymap('n', '<S->', '<Cmd>BufferPrevious<CR>', { desc = "tab previos"})
 
-vim.api.nvim_set_keymap('n', '<leader>h', '<Cmd>BufferMoveNext<CR>', { desc =  "move tab next"})
-vim.api.nvim_set_keymap('n', '<leader>l', '<Cmd>BufferMovePrevious<CR>', { desc = "move tab previos"})
+vim.api.nvim_set_keymap('n', '<leader>l', '<Cmd>BufferMoveNext<CR>', { desc =  "move tab next"})
+vim.api.nvim_set_keymap('n', '<leader>', '<Cmd>BufferMovePrevious<CR>', { desc = "move tab previos"})
 
 
 -- keymap move in the screan split 

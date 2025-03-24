@@ -9,6 +9,11 @@ return {
                         annotation_convention = "doxygen", -- Usa Doxygen tanto para .c quanto .h
                     },
                 },
+		h = {
+                    template = {
+                        annotation_convention = "doxygen", -- Usa Doxygen tanto para .c quanto .h
+                    },
+                },
                 cpp = {
                     template = {
                         annotation_convention = "doxygen", -- Inclui também para C++

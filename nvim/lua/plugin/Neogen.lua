@@ -9,6 +9,11 @@ return {
                     template = {
                         annotation_convention = "doxygen"
                     }
+                },
+		h      = {
+                    template = {
+                        annotation_convention = "doxygen"
+                    }
                 }
             }
         })

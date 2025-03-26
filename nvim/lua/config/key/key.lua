@@ -34,4 +34,7 @@ vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "kj", "<Esc>", { noremap = true, silent = true })
 
 
+vim.cmd [[
+    autocmd BufRead,BufNewFile *.h set filetype=c
+]]
 

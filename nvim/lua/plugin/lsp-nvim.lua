@@ -117,25 +117,23 @@ return {
         },
       })
 
-      require('lspconfig').eslint.setup({
-        on_attach = on_attach,
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
-        settings = {
-          packageManager = "npm",
-          codeAction = {
-            disableRuleComment = {
-              enable = true,
-              location = "separateLine",
-            },
-            showDocumentation = {
-              enable = true,
-            },
-          },
-        },
-      })
-    end,
-  },
 
+require('lspconfig').clangd.setup({
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--query-driver=/usr/bin/clang++,/usr/bin/g++",  # Ajuste os caminhos
+    "--clang-tidy",
+    "--header-insertion=never",
+    "--all-scopes-completion",
+    "--completion-style=detailed",
+  },
+  filetypes = {"c", "cpp", "objc", "objcpp"},
+  init_options = {
+    clangdFileStatus = true,
+    fallbackFlags = { "-I/usr/include/opencv4" }  # Adicione seus paths aqui
+  }
+})
   -- Sistema de autocompletar
   {
     "hrsh7th/nvim-cmp",

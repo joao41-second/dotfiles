@@ -11,7 +11,7 @@ fi
 
 #rm ~/.config/terminator/config
 #ln -s $PATHS/terminitor/config ~/.config/terminator/config
-
+mkdir ~/.config/
 rm -rf ~/.config/nvim
 ln -s $PATHS/nvim/ ~/.config/nvim
 
@@ -25,5 +25,7 @@ rm -rf ~/.tmux.conf.local
 ln -s $PATHS/tmux/.tmux.conf.local ~/.tmux.conf.local
 
 cd ~
-
 ln -s -f .tmux/.tmux.conf
+
+cd ~ 
+ln -s -f ./.config/dconf $PATHS/dconf 

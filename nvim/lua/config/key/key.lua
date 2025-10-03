@@ -2,6 +2,7 @@ vim.keymap.set("n", "<leader>e", function()
   require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
 end, { desc = "Alternar Neo-tree" })
 
+
 vim.opt.background = "dark" 
 -- move tabs
 vim.api.nvim_set_keymap('n', '<S-l>', '<Cmd>BufferNext<CR>', { desc = "tab  next"})

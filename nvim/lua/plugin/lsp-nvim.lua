@@ -1,23 +1,23 @@
+
 return {
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" }, -- nomes de eventos devem ter letras maiúsculas
     dependencies = {
       { "williamboman/mason.nvim", config = true },
       "williamboman/mason-lspconfig.nvim",
-      "hrsh7th/cmp-nvim-lsp",  -- Integração do LSP com nvim-cmp
+      "hrsh7th/cmp-nvim-lsp", -- integração do LSP com nvim-cmp
     },
     config = function()
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      
+
       lspconfig.clangd.setup({
         capabilities = capabilities,
-        on_attach = function(client, bufnr)
-          -- Configurar para exibir erros inline
+        on_attach = function(_, _)
           vim.diagnostic.config({
             virtual_text = {
-              prefix = "●",  -- Ícone antes da mensagem de erro
+              prefix = "●", -- ícone antes da mensagem de erro
               spacing = 2,
             },
           })
@@ -25,15 +25,16 @@ return {
       })
     end,
   },
+
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    event = "InsertEnter", -- idem, evento em maiúscula
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "L3MON4D3/LuaSnip",
+      "L3MON4D3/LuaSnip", -- o nome do repositório é case-sensitive
     },
     config = function()
       local cmp = require("cmp")

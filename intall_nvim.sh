@@ -1,40 +1,79 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -e
+# Script para instalar Neovim 0.10.1
+# Autor: Script de instalação automática
+# Data: 2025-10-14
 
-# 1. Baixar a versão mais recente (ou a que você indicou)
-URL="https://github.com/neovim/neovim/releases/download/v0.11.4/nvim-linux-x86_64.tar.gz"
-TMP_DIR=$(mktemp -d)
+set -e  # Sai em caso de erro
 
-echo "🔽 Baixando Neovim..."
-wget -q "$URL" -O "$TMP_DIR/nvim.tar.gz"
+NVIM_VERSION="0.10.1"
+INSTALL_DIR="/usr/local"
 
-# 2. Extrair
-echo "📦 Extraindo..."
-tar -xzf "$TMP_DIR/nvim.tar.gz" -C "$TMP_DIR"
+echo "=========================================="
+echo "Instalando Neovim ${NVIM_VERSION}"
+echo "=========================================="
 
-# 3. Mover para /opt/nvim (requer sudo)
-echo "🚚 Instalando em /opt/nvim..."
-sudo rm -rf /opt/nvim
-sudo mv "$TMP_DIR/nvim-linux-x86_64" /opt/nvim
-
-# 4. Criar link simbólico (recomendado)
-echo "🔗 Criando link simbólico..."
-sudo ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
-
-# 5. Garantir que o PATH tenha /usr/local/bin (geralmente já tem)
-#    Mas, por segurança, adiciona no shell se faltar
-if ! echo "$PATH" | grep -q "/usr/local/bin"; then
-    SHELL_RC="$HOME/.bashrc"
-    if [ -n "$ZSH_VERSION" ]; then SHELL_RC="$HOME/.zshrc"; fi
-
-    echo 'export PATH="$PATH:/usr/local/bin"' >> "$SHELL_RC"
-    echo "✅ PATH atualizado em $SHELL_RC"
+# Detectar sistema operacional
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    echo "Sistema: Linux detectado"
+    
+    # Criar diretório temporário
+    TEMP_DIR=$(mktemp -d)
+    cd "$TEMP_DIR"
+    
+    echo "Baixando Neovim ${NVIM_VERSION}..."
+    wget "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux64.tar.gz"
+    
+    echo "Extraindo arquivos..."
+    tar xzf nvim-linux64.tar.gz
+    
+    echo "Instalando Neovim..."
+    sudo rm -rf ${INSTALL_DIR}/nvim-linux64
+    sudo mv nvim-linux64 ${INSTALL_DIR}/
+    
+    # Criar link simbólico
+    sudo ln -sf ${INSTALL_DIR}/nvim-linux64/bin/nvim /usr/local/bin/nvim
+    
+    # Limpar arquivos temporários
+    cd -
+    rm -rf "$TEMP_DIR"
+    
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Sistema: macOS detectado"
+    
+    # Criar diretório temporário
+    TEMP_DIR=$(mktemp -d)
+    cd "$TEMP_DIR"
+    
+    echo "Baixando Neovim ${NVIM_VERSION}..."
+    curl -LO "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-macos-x86_64.tar.gz"
+    
+    echo "Extraindo arquivos..."
+    tar xzf nvim-macos-x86_64.tar.gz
+    
+    echo "Instalando Neovim..."
+    sudo rm -rf ${INSTALL_DIR}/nvim-macos-x86_64
+    sudo mv nvim-macos-x86_64 ${INSTALL_DIR}/
+    
+    # Criar link simbólico
+    sudo ln -sf ${INSTALL_DIR}/nvim-macos-x86_64/bin/nvim /usr/local/bin/nvim
+    
+    # Limpar arquivos temporários
+    cd -
+    rm -rf "$TEMP_DIR"
+    
+else
+    echo "Sistema operacional não suportado: $OSTYPE"
+    exit 1
 fi
 
-# 6. Limpar temporários
-rm -rf "$TMP_DIR"
+echo ""
+echo "=========================================="
+echo "Instalação concluída com sucesso!"
+echo "=========================================="
+echo ""
+echo "Verificando versão instalada:"
+nvim --version | head -n 1
 
-echo "✅ Neovim instalado com sucesso!"
-echo "➡️ Execute: nvim --version"
-
+echo ""
+echo "Para usar o Neovim, execute: nvim"

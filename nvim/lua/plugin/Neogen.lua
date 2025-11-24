@@ -10,14 +10,14 @@ return {
                         annotation_convention = "doxygen"
                     }
                 },
-		h      = {
+                h = {
                     template = {
                         annotation_convention = "doxygen"
                     }
                 }
             }
         })
-        vim.api.nvim_set_keymap("n", "<leader>nd", ":Neogen<CR>", { noremap = true, silent = true })
+        -- usar API moderna
+        vim.keymap.set("n", "<leader>nd", "<cmd>Neogen<CR>", { noremap = true, silent = true })
     end
 }
-

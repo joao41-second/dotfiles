@@ -52,7 +52,12 @@ return {
         -- Lista de servidores que o Mason deve garantir que estejam instalados.
         -- Ex: { "lua_ls", "tsserver", "pyright" }
         -- Deixei vazio para você escolher quais instalar via :Mason
-        ensure_installed = {},
+
+  	 ensure_installed = {
+        "clangd",  -- C++ / ROS 2
+        "lua_ls",
+        "lemminx", -- XML / URDF / Xacro
+      	},
 
         -- Função 'handler' que será chamada para cada servidor
         handlers = {

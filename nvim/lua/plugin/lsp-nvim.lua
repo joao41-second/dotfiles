@@ -14,15 +14,13 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
-      "hrsh7th/cmp-nvim-lsp", -- Necessário para as 'capabilities'
+      "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      -- Esta função será usada pelo mason-lspconfig para configurar cada servidor
-      local on_attach = function(client, bufnr)
+      local on_attach = function(_, bufnr)
         local opts = { noremap = true, silent = true, buffer = bufnr }
         local keymap = vim.keymap.set
 
-        -- Atalhos de teclado para funcionalidades do LSP
         keymap("n", "gD", vim.lsp.buf.declaration, opts)
         keymap("n", "gd", vim.lsp.buf.definition, opts)
         keymap("n", "K", vim.lsp.buf.hover, opts)
@@ -35,28 +33,25 @@ return {
         end, opts)
         keymap("n", "<leader>D", vim.lsp.buf.type_definition, opts)
         keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)
-        -- Mostra um menu flutuante com as ações de código disponíveis
         keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
         keymap("n", "gr", vim.lsp.buf.references, opts)
-        -- Formata o buffer usando o LSP
         keymap("n", "<leader>f", function()
           vim.lsp.buf.format({ async = true })
         end, opts)
       end
 
-      -- Obtém as 'capabilities' (capacidades) que o nvim-cmp oferece ao LSP
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Configuração do Mason-LSPConfig
       require("mason-lspconfig").setup({
-        -- Lista de servidores que o Mason deve garantir que estejam instalados.
-        -- Ex: { "lua_ls", "tsserver", "pyright" }
-        -- Deixei vazio para você escolher quais instalar via :Mason
-        ensure_installed = {},
-
-        -- Função 'handler' que será chamada para cada servidor
+        ensure_installed = {
+          "clangd",
+          "lua_ls",
+          "lemminx",
+          -- "tsserver", -- TS/JS se quiseres
+        },
+        automatic_installation = true,
         handlers = {
-          -- Configuração padrão para todos os servidores
+          -- default handler
           function(server_name)
             require("lspconfig")[server_name].setup({
               on_attach = on_attach,
@@ -64,7 +59,7 @@ return {
             })
           end,
 
-          -- Configuração específica para o 'lua_ls' (servidor de Lua)
+          -- config específica do lua_ls
           ["lua_ls"] = function()
             require("lspconfig").lua_ls.setup({
               on_attach = on_attach,
@@ -73,7 +68,13 @@ return {
                 Lua = {
                   runtime = { version = "LuaJIT" },
                   diagnostics = { globals = { "vim" } },
-                  workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+                  workspace = {
+                    library = {
+                      vim.env.VIMRUNTIME,
+                      unpack(vim.api.nvim_get_runtime_file("", true)),
+                    },
+                    checkThirdParty = false,
+                  },
                   telemetry = { enable = false },
                 },
               },
@@ -84,7 +85,7 @@ return {
     end,
   },
 
-  -- Nvim-Cmp: Motor de autocompletar (sem alterações aqui)
+  -- Nvim-Cmp: Motor de autocompletar
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",

@@ -31,6 +31,7 @@ map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
 -- Close buffer
 map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
 
+
 -- Wipeout buffer
 --                 :BufferWipeout
 
@@ -56,3 +57,5 @@ map('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
 -- :BarbarEnable - enables barbar (enabled by default)
 -- :BarbarDisable - very bad command, should never be used
 
+
+vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR>', opts)

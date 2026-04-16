@@ -48,3 +48,4 @@ vim.keymap.set('v', '<C-c>', '"+y')
 -- Mapeia Ctrl+V para colar do clipboard no modo de inserção
 vim.keymap.set('i', '<C-v>', '<C-r>+')
 vim.keymap.set('c', '<C-v>', '<C-r>+')
+vim.keymap.set('n', '<leader>w', '<Cmd>BufferClose<CR>', { noremap = true, silent = true })

@@ -2,8 +2,10 @@ vim.keymap.set("n", "<leader>e", function()
   require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
 end, { desc = "Alternar Neo-tree" })
 
+vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
+vim.cmd("highlight NormalNC guibg=NONE ctermbg=NONE")
 
-vim.opt.background = "dark" 
+
 -- move tabs
 vim.api.nvim_set_keymap('n', '<S-l>', '<Cmd>BufferNext<CR>', { desc = "tab  next"})
 vim.api.nvim_set_keymap('n', '<S-h>', '<Cmd>BufferPrevious<CR>', { desc = "tab previos"})

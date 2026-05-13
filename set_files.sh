@@ -2,15 +2,7 @@ PATHS=$(pwd)
 
 echo $PATHS
 
-if [ "$1" -eq 1 ]; then
-	rm ~/.zshrc
-	ln -s $PATHS/terminal/.zshrc ~/.zshrc
-else
-	echo "nao modou .zshrc"
-fi
 
-#rm ~/.config/terminator/config
-#ln -s $PATHS/terminitor/config ~/.config/terminator/config
 mkdir ~/.config/
 rm -rf ~/.config/nvim
 ln -s $PATHS/nvim/ ~/.config/nvim

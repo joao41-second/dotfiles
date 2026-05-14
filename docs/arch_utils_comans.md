@@ -25,3 +25,7 @@ xdg-mime query default <class of file>
 
 ```
 
+# Grab the pc Srcrean use the comand 
+```
+  wf-recorder --audio -f ~/Videos/gravacao-$(date +%F-%H%M%S).mp4
+```

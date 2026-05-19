@@ -84,6 +84,18 @@ return {
               },
             })
           end,
+	["arduino_language_server"] = function()
+    require("lspconfig").arduino_language_server.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        cmd = {
+		vim.fn.expand("~/go/bin/arduino-language-server"),
+            "-fqbn", "arduino:avr:uno",
+            "-cli", "/usr/bin/arduino-cli",
+            "-clangd", "/usr/bin/clangd",
+        },
+    })
+end,
         },
       })
     end,
@@ -106,11 +118,19 @@ return {
       local luasnip = require("luasnip")
 
       cmp.setup({
+    completion = {
+    completeopt = "menu,menuone,noinsert",
+  },
+  experimental = {
+    ghost_text = true,
+  },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
           end,
         },
+
+preselect = cmp.PreselectMode.Item,
         mapping = cmp.mapping.preset.insert({
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),

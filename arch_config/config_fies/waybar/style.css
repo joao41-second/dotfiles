@@ -76,6 +76,7 @@ button:hover {
     box-shadow: inset 0 -3px #ffffff;
 }
 
+#test,
 #clock,
 #battery,
 #cpu,
@@ -117,6 +118,10 @@ button:hover {
     background-color: #64727D;
 }
 
+
+#test {
+    background-color: #64727D;
+}
 #battery {
     background-color: #ffffff;
     color: #000000;
@@ -324,4 +329,16 @@ label:focus {
 
 #privacy-item.audio-out {
     background-color: #0069d4;
+}
+
+/* botão base */
+#custom-scripts {
+  padding: 0 10px;
+  border-radius: 8px;
+}
+
+/* quando aberto */
+#custom-scripts.open {
+  background: #313244;
+  color: #a6e3a1;
 }

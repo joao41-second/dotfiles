@@ -1,0 +1,7 @@
+[[plugin.deps]]
+use = "ettom/openscad"
+rev = "4397564"
+hash = "996ad1c3b9260026ecdb2d8e7d454c50"
+
+[flavor]
+deps = []

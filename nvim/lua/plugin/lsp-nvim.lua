@@ -1,168 +1,204 @@
 return {
-  -- Mason: Gerenciador de LSPs, formatadores e linters
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    config = function()
-      require("mason").setup()
-    end,
-  },
+	----------------------------------------------------------------------
+	-- MASON (LSP installer)
+	----------------------------------------------------------------------
+	{
+		"williamboman/mason.nvim",
+		cmd = "Mason",
+		config = function()
+			require("mason").setup()
+		end,
+	},
 
-  -- Nvim-LSPConfig: Plugin principal para configurar os servidores LSP
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason-lspconfig.nvim",
-      "hrsh7th/cmp-nvim-lsp", -- Necessário para as 'capabilities'
-    },
-    config = function()
-      -- Esta função será usada pelo mason-lspconfig para configurar cada servidor
-      local on_attach = function(client, bufnr)
-        local opts = { noremap = true, silent = true, buffer = bufnr }
-        local keymap = vim.keymap.set
+	----------------------------------------------------------------------
+	-- LSP CONFIG
+	----------------------------------------------------------------------
+	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"williamboman/mason-lspconfig.nvim",
+			"hrsh7th/cmp-nvim-lsp",
+		},
 
-        -- Atalhos de teclado para funcionalidades do LSP
-        keymap("n", "gD", vim.lsp.buf.declaration, opts)
-        keymap("n", "gd", vim.lsp.buf.definition, opts)
-        keymap("n", "K", vim.lsp.buf.hover, opts)
-        keymap("n", "gi", vim.lsp.buf.implementation, opts)
-        keymap("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-        keymap("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-        keymap("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-        keymap("n", "<leader>wl", function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, opts)
-        keymap("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-        keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)
-        -- Mostra um menu flutuante com as ações de código disponíveis
-        keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-        keymap("n", "gr", vim.lsp.buf.references, opts)
-        -- Formata o buffer usando o LSP
-        keymap("n", "<leader>f", function()
-          vim.lsp.buf.format({ async = true })
-        end, opts)
-      end
+		config = function()
+			local lspconfig = require("lspconfig")
 
-      -- Obtém as 'capabilities' (capacidades) que o nvim-cmp oferece ao LSP
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			------------------------------------------------------------------
+			-- ON ATTACH
+			------------------------------------------------------------------
+			local on_attach = function(_, bufnr)
+				local opts = { noremap = true, silent = true, buffer = bufnr }
+				local keymap = vim.keymap.set
 
-      -- Configuração do Mason-LSPConfig
-      require("mason-lspconfig").setup({
-        -- Lista de servidores que o Mason deve garantir que estejam instalados.
-        -- Ex: { "lua_ls", "tsserver", "pyright" }
-        -- Deixei vazio para você escolher quais instalar via :Mason
+				keymap("n", "gd", vim.lsp.buf.definition, opts)
+				keymap("n", "K", vim.lsp.buf.hover, opts)
+				keymap("n", "gr", vim.lsp.buf.references, opts)
+				keymap("n", "rn", vim.lsp.buf.rename, opts)
+				keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+				keymap("n", "<leader>f", function()
+					vim.lsp.buf.format({ async = true })
+				end, opts)
+			end
 
-  	 ensure_installed = {
-        "clangd",  -- C++ / ROS 2
-        "lua_ls",
-        "lemminx", -- XML / URDF / Xacro
-      	},
+			------------------------------------------------------------------
+			-- CAPABILITIES (CMP)
+			------------------------------------------------------------------
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-        -- Função 'handler' que será chamada para cada servidor
-        handlers = {
-          -- Configuração padrão para todos os servidores
-          function(server_name)
-            require("lspconfig")[server_name].setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-            })
-          end,
+			------------------------------------------------------------------
+			-- MASON SETUP
+			------------------------------------------------------------------
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"lua_ls",
+					"clangd",
+					"lemminx",
+					"angularls",
+				},
 
-          -- Configuração específica para o 'lua_ls' (servidor de Lua)
-          ["lua_ls"] = function()
-            require("lspconfig").lua_ls.setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-              settings = {
-                Lua = {
-                  runtime = { version = "LuaJIT" },
-                  diagnostics = { globals = { "vim" } },
-                  workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-                  telemetry = { enable = false },
-                },
-              },
-            })
-          end,
-	["arduino_language_server"] = function()
-    require("lspconfig").arduino_language_server.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        cmd = {
-		vim.fn.expand("~/go/bin/arduino-language-server"),
-            "-fqbn", "arduino:avr:uno",
-            "-cli", "/usr/bin/arduino-cli",
-            "-clangd", "/usr/bin/clangd",
-        },
-    })
-end,
-        },
-      })
-    end,
-  },
+				handlers = {
+					----------------------------------------------------------------
+					-- DEFAULT LSP HANDLER
+					----------------------------------------------------------------
+					function(server_name)
+						lspconfig[server_name].setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+						})
+					end,
 
-  -- Nvim-Cmp: Motor de autocompletar (sem alterações aqui)
-  {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-    },
-    config = function()
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
+					----------------------------------------------------------------
+					-- LUA (FIX DO "vim is undefined")
+					----------------------------------------------------------------
+					["lua_ls"] = function()
+						lspconfig.lua_ls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							settings = {
+								Lua = {
+									runtime = {
+										version = "LuaJIT",
+									},
+									diagnostics = {
+										globals = { "vim" },
+									},
+									workspace = {
+										checkThirdParty = false,
+										library = vim.api.nvim_get_runtime_file("", true),
+									},
+									telemetry = {
+										enable = false,
+									},
+								},
+							},
+						})
+					end,
 
-      cmp.setup({
-    completion = {
-    completeopt = "menu,menuone,noinsert",
-  },
-  experimental = {
-    ghost_text = true,
-  },
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
+					----------------------------------------------------------------
+					-- ANGULAR LSP
+					----------------------------------------------------------------
+					["angularls"] = function()
+						lspconfig.angularls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							filetypes = {
+								"typescript",
+								"html",
+								"typescriptreact",
+								"htmlangular",
+							},
+						})
+					end,
 
-preselect = cmp.PreselectMode.Item,
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "buffer" },
-          { name = "path" },
-        }),
-      })
-    end,
-  },
+					----------------------------------------------------------------
+					-- ARDUINO (OPCIONAL)
+					----------------------------------------------------------------
+					["arduino_language_server"] = function()
+						lspconfig.arduino_language_server.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							cmd = {
+								vim.fn.expand("~/go/bin/arduino-language-server"),
+								"-fqbn",
+								"arduino:avr:uno",
+								"-cli",
+								"/usr/bin/arduino-cli",
+								"-clangd",
+								"/usr/bin/clangd",
+							},
+						})
+					end,
+				},
+			})
+		end,
+	},
+
+	----------------------------------------------------------------------
+	-- CMP (AUTOCOMPLETE)
+	----------------------------------------------------------------------
+	{
+		"hrsh7th/nvim-cmp",
+		event = "InsertEnter",
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+		},
+
+		config = function()
+			local cmp = require("cmp")
+			local luasnip = require("luasnip")
+
+			cmp.setup({
+				completion = {
+					completeopt = "menu,menuone,noinsert",
+				},
+
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
+
+				mapping = cmp.mapping.preset.insert({
+					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item()
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item()
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				}),
+
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+					{ name = "buffer" },
+					{ name = "path" },
+				}),
+			})
+		end,
+	},
 }

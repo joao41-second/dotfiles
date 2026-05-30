@@ -1,10 +1,31 @@
-PATHS=$(pwd)
+#!/bin/bash
 
-echo $PATHS
-#rm -fr  ~/.config/hypr/
-ln -s $PATHS/hypr ~/.config/hypr
+PATHS="$(pwd)"
 
-#rm -fr  ~/.config/kitty/
-ln -s $PATHS/kitty ~/.config/kitty
+echo "$PATHS"
 
-ln -s $PATHS/yazi ~/.config/yazi
+mkdir -p ~/.config
+
+configs=(
+    hypr
+    kitty
+    yazi
+    blueman
+)
+
+for cfg in "${configs[@]}"; do
+    target="$HOME/.config/$cfg"
+
+    # remove symlink antigo
+    [ -L "$target" ] && rm "$target"
+
+    # avisa se existir pasta real
+    if [ -d "$target" ]; then
+        echo "Diretório já existe: $target"
+        continue
+    fi
+
+    ln -s "$PATHS/$cfg" "$target"
+
+    echo "Linked $cfg"
+done

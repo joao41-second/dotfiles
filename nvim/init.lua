@@ -36,3 +36,4 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({ import = "plugin" }, { change_detection = { notify = false } })
 require("config/key/key")
+require("config/key/setings")

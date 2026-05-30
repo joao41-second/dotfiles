@@ -29,3 +29,4 @@ xdg-mime query default <class of file>
 ```
   wf-recorder --audio -f ~/Videos/gravacao-$(date +%F-%H%M%S).mp4
 ```
+

@@ -1,3 +1,5 @@
-return{
-    'joao41-second/ollama-nvim',
+return {
+
+	dir = "/home/joao41/git/ollama-nvim",
+	name = "ollama-nvim",
 }

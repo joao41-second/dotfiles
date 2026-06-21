@@ -1,58 +1,46 @@
-[opener]
+[manager]
+sort_by = "mtime"
+sort_reverse = true
 
+[open]
+prepend_rules = [
+  { mime = "text/*", use = "edit" },
+  { mime = "image/*", use = "image" },
+  { mime = "video/*", use = "video" },
+  { mime = "application/pdf", use = "pdf" },
+  { mime = "application/vnd.openxmlformats-officedocument.*", use = "office" },
+  { mime = "application/vnd.oasis.opendocument.*", use = "office" },
+  { mime = "text/html", use = "browser" },
+  { mime = "*", use = "open" },
+]
+
+[opener]
 edit = [
   { run = 'nvim "$@"', block = true, for = "unix" },
 ]
-
 image = [
   { run = 'sxiv "$@"', orphan = true, for = "unix" },
 ]
-
 video = [
   { run = 'mpv "$@"', orphan = true, for = "unix" },
 ]
-
 pdf = [
   { run = 'zathura "$@"', orphan = true, for = "unix" },
 ]
-
 office = [
   { run = 'libreoffice "$@"', orphan = true, for = "unix" },
 ]
-
 browser = [
   { run = 'brave "$@"', orphan = true, for = "unix" },
 ]
-
 open = [
   { run = 'xdg-open "$@"', orphan = true, for = "unix" },
 ]
 
-[open]
-
-prepend_rules = [
-
-  { mime = "text/*", use = "edit" },
-
-  { mime = "image/*", use = "image" },
-  { mime = "video/*", use = "video" },
-
-  { mime = "application/pdf", use = "pdf" },
-
-  { mime = "application/vnd.openxmlformats-officedocument.*", use = "office" },
-  { mime = "application/vnd.oasis.opendocument.*", use = "office" },
-
-  { mime = "text/html", use = "browser" },
-
-  { mime = "*", use = "open" },
-]
-
 [plugin]
-  prepend_preloaders = [
-    # 3D models with OpenSCAD
-    { url = "*.{scad,csg,3mf,amf,dxf,off,stl}", run = "openscad" },
-  ]
-  prepend_previewers = [
-    # 3D models with OpenSCAD
-    { url = "*.{scad,csg,3mf,amf,dxf,off,stl}", run = "openscad" },
-  ]
+prepend_preloaders = [
+  { url = "*.{scad,csg,3mf,amf,dxf,off,stl}", run = "openscad" },
+]
+prepend_previewers = [
+  { url = "*.{scad,csg,3mf,amf,dxf,off,stl}", run = "openscad" },
+]

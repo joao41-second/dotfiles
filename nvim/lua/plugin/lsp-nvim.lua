@@ -73,29 +73,28 @@ return {
 					----------------------------------------------------------------
 					["lua_ls"] = function()
 						lspconfig.lua_ls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
+							on_attach = on_attach, -- ← faltava isto
+							capabilities = capabilities, -- ← e isto
 							settings = {
 								Lua = {
 									runtime = {
 										version = "LuaJIT",
 									},
-									diagnostics = {
-										globals = { "vim" },
-									},
 									workspace = {
 										checkThirdParty = false,
-										library = vim.api.nvim_get_runtime_file("", true),
+										library = {
+											vim.env.VIMRUNTIME,
+											"${3rd}/luv/library",
+											"${3rd}/busted/library",
+										},
 									},
-									telemetry = {
-										enable = false,
+									diagnostics = {
+										globals = { "vim" }, -- ← garante que vim é reconhecido
 									},
 								},
 							},
 						})
-					end,
-
-					----------------------------------------------------------------
+					end, ----------------------------------------------------------------
 					-- ANGULAR LSP
 					----------------------------------------------------------------
 					["angularls"] = function()

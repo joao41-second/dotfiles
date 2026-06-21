@@ -61,3 +61,5 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "xml"
 	end,
 })
+
+vim.keymap.set("n", "r", vim.lsp.buf.references)

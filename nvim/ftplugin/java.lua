@@ -34,7 +34,7 @@ local config = {
 				enabled = true,
 			},
 			saveActions = {
-				organizeImports = true,
+				organizeImports = false,
 			},
 			completion = {
 				favoriteStaticMembers = {

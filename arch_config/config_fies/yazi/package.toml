@@ -4,9 +4,9 @@ rev = "4397564"
 hash = "996ad1c3b9260026ecdb2d8e7d454c50"
 
 [[plugin.deps]]
-use = "yazi-rs/plugins:mount"
-rev = "598cdb6"
-hash = "e3260d0b1feded8c8e3ae3afa1169e30"
+use = "joao41-second/f3d-preview"
+rev = "b3aa579"
+hash = "8ec3158b91fd1daa1335531393fae05c"
 
 [flavor]
 deps = []

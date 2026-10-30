@@ -14,7 +14,7 @@ Create this repository for save the my srcipts and configs the nvim , tmux , zsh
  ```
 ## To install and config tailscale.
 
-    
+  
 
 
 

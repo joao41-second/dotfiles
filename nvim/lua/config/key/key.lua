@@ -1,5 +1,5 @@
 vim.keymap.set("n", "<leader>e", function()
-	require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+    require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
 end, { desc = "Alternar Neo-tree" })
 
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
@@ -36,6 +36,12 @@ vim.api.nvim_set_keymap("i", "jh", "<Esc>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "kj", "<Esc>", { noremap = true, silent = true })
 
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Ir para a definição" })
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Ir para a declaração" })
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Ir para a implementação" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Mostrar referências" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Documentação" })
+
 vim.keymap.set("v", "<leader>c", ":Chat<CR>", { noremap = true })
 
 vim.cmd([[
@@ -56,10 +62,8 @@ vim.keymap.set("i", "<C-v>", "<C-r>+")
 vim.keymap.set("c", "<C-v>", "<C-r>+")
 
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	pattern = { "*.urdf", "*.xacro" },
-	callback = function()
-		vim.bo.filetype = "xml"
-	end,
+    pattern = { "*.urdf", "*.xacro" },
+    callback = function()
+        vim.bo.filetype = "xml"
+    end,
 })
-
-vim.keymap.set("n", "r", vim.lsp.buf.references)

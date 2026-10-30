@@ -1,3 +1,10 @@
 return {
-	"mfussenegger/nvim-jdtls",
+    {
+        "mfussenegger/nvim-jdtls",
+        ft = "java",
+        dependencies = {
+            "neovim/nvim-lspconfig",
+            "hrsh7th/cmp-nvim-lsp",
+        },
+    },
 }

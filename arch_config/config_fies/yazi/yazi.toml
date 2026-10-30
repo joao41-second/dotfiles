@@ -2,6 +2,11 @@
 sort_by = "mtime"
 sort_reverse = true
 
+[mgr]
+linemode = "size_and_mtime"
+sort_by = "mtime"
+sort_reverse = true
+
 [open]
 prepend_rules = [
   { mime = "text/*", use = "edit" },
@@ -39,8 +44,11 @@ open = [
 
 [plugin]
 prepend_preloaders = [
-  { url = "*.{scad,csg,3mf,amf,dxf,off,stl}", run = "openscad" },
+  # 3d objects
+  { url = "*.{3mf,obj,pts,ply,stl,step,stp}", run="f3d-preview"},
 ]
+
 prepend_previewers = [
-  { url = "*.{scad,csg,3mf,amf,dxf,off,stl}", run = "openscad" },
+  # 3d objects
+  { url = "*.{3mf,obj,pts,ply,stl,step,stp}", run="f3d-preview"},
 ]

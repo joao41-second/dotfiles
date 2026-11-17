@@ -24,11 +24,6 @@ return {
         config = function()
             local lspconfig = require("lspconfig")
 
-
-
-
-
-
             ------------------------------------------------------------------
             -- ON ATTACH
             ------------------------------------------------------------------
@@ -62,7 +57,6 @@ return {
                     "angularls",
                 },
 
-
                 handlers = {
                     ----------------------------------------------------------------
                     -- DEFAULT LSP HANDLER
@@ -86,6 +80,7 @@ return {
                                 "--header-insertion=iwyu",
                                 "--completion-style=detailed",
                                 "--function-arg-placeholders",
+                                "--enable-config",
                             },
 
                             root_dir = lspconfig.util.root_pattern("compile_flags.txt", "CMakeLists.txt", ".git"),
@@ -154,25 +149,8 @@ return {
                     end,
                 },
             })
-            ------------------------------------------------------------------
-            -- KOTLIN (instalado via yay, fora do Mason)
-            ------------------------------------------------------------------
-            vim.lsp.config("kotlin_lsp", {
-                cmd = { "kotlin-lsp", "--stdio" },
-                filetypes = { "kotlin" },
-                root_markers = {
-                    "settings.gradle", "settings.gradle.kts",
-                    "build.gradle", "build.gradle.kts", "pom.xml",
-                },
-                on_attach = on_attach,
-                capabilities = capabilities,
-            })
-            vim.lsp.enable("kotlin_lsp")
-
         end,
-
     },
-
 
     ----------------------------------------------------------------------
     -- CMP (AUTOCOMPLETE)

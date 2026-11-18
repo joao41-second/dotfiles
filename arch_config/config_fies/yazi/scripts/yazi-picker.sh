@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-
-# Wrapper xdg-desktop-portal-termfilechooser
-# Yazi dentro do Kitty
-# Destinos automáticos por extensão
+# Wrapper xdg-desktop-portal-termfilechooser (Yazi no Kitty)
 
 multiple="$1"
 directory="$2"
@@ -11,13 +8,8 @@ path="$4"
 out="$5"
 debug="${6:-0}"
 
-set -e
+[ "$debug" = 1 ] && set -x
 
-if [ "$debug" = 1 ]; then
-    set -x
-fi
-
-# Determina o modo do seletor
 case "$multiple$directory$save" in
     000) mode=file ;;
     100) mode=files ;;
@@ -29,69 +21,77 @@ case "$multiple$directory$save" in
     *) echo "Parâmetros inválidos" >&2; exit 1 ;;
 esac
 
-# Localiza Yazi
-ya="$(command -v yazi)" || {
-    echo "Erro: Yazi não encontrado." >&2
-    exit 1
-}
+ya="$(command -v yazi)" || { echo "Yazi não encontrado" >&2; exit 1; }
 
-# Diretório base
-downloads="$HOME"
-
-# Identifica a extensão do ficheiro
+base="$HOME"
 filename="$(basename -- "$path")"
-extension="${filename##*.}"
-extension="$(printf '%s' "$extension" | tr '[:upper:]' '[:lower:]')"
+extension=""
+case "$filename" in
+    *.*) extension="${filename##*.}" ;;
+esac
+extension="${extension,,}"
 
-# Define a pasta conforme a extensão
 case "$extension" in
-    3mf)
-        target="$downloads/Desktop/3mf"
-        ;;
-    stl)
-        target="$downloads/Desktop/stl"
-        ;;
-    png|jpg|jpeg)
-        target="$downloads/Pictures"
+    3mf)          target="$base/Desktop/3mf" ;;
+    stl)          target="$base/Desktop/stl" ;;
+    png|jpg|jpeg) target="$base/Pictures" ;;
+    *)            target="$base" ;;
+esac
+mkdir -p "$target"
+
+tmp="$(mktemp)"
+cwdfile="$(mktemp)"
+placeholder=""
+
+cleanup() {
+    rm -f "$tmp" "$cwdfile"
+    # Apaga o placeholder (a aplicação volta a criar o ficheiro real)
+    [ -n "$placeholder" ] && rm -f "$placeholder"
+}
+trap cleanup EXIT
+
+# Define o que o Yazi abre
+case "$mode" in
+    save-file|save-files)
+        [ -z "$filename" ] && filename="sem_nome"
+        placeholder="$target/$filename"
+        if [ -e "$placeholder" ]; then
+            placeholder=""            # já existe: não o apagar no fim
+            start="$target/$filename"
+        else
+            printf '%s\n' "Seleciona este ficheiro com Enter para guardar aqui." > "$placeholder"
+            start="$placeholder"
+        fi
         ;;
     *)
-        target="$downloads"
+        if [ -d "$path" ]; then
+            start="$path"
+        elif [ -n "$path" ] && [ -d "$(dirname -- "$path")" ]; then
+            start="$(dirname -- "$path")"
+        else
+            start="$target"
+        fi
         ;;
 esac
 
-# Cria a pasta se não existir
-mkdir -p "$target"
-
-# Define pasta inicial
-if [ "$save" = 1 ]; then
-    start_dir="$target"
-elif [ -d "$path" ]; then
-    start_dir="$path"
-elif [ -n "$path" ] && [ -d "$(dirname -- "$path")" ]; then
-    start_dir="$(dirname -- "$path")"
-else
-    start_dir="$target"
-fi
-
-# Ficheiro de saída
-touch "$out"
-
-# Ficheiro temporário
-tmp="$(mktemp)"
-trap 'rm -f "$tmp"' EXIT
-
-# Abre Yazi no Kitty
-kitty \
+kitty --single-instance=no \
     --class=filechooser \
-    --title="Guardar ficheiro - $extension" \
-    -- "$ya" "$start_dir" \
-    --chooser-file="$tmp"
+    --title="Selecionar - ${extension:-ficheiro}" \
+    "$ya" "$start" \
+    --chooser-file="$tmp" \
+    --cwd-file="$cwdfile"
 
-# Cancelamento
-if [ ! -s "$tmp" ]; then
-    exit 0
-fi
+: > "$out"
 
-# Devolve seleção ao portal
-cat "$tmp" > "$out"
+case "$mode" in
+    dir|dirs|save-dir)
+        if [ -s "$tmp" ]; then cat "$tmp" > "$out"
+        elif [ -s "$cwdfile" ]; then cat "$cwdfile" > "$out"
+        fi
+        ;;
+    *)
+        [ -s "$tmp" ] && cat "$tmp" > "$out"
+        ;;
+esac
 
+exit 0

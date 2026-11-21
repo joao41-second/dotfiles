@@ -21,7 +21,9 @@ case "$multiple$directory$save" in
     *) echo "Parâmetros inválidos" >&2; exit 1 ;;
 esac
 
-ya="$(command -v yazi)" || { echo "Yazi não encontrado" >&2; exit 1; }
+ya="$(command  -v yazi)" || { echo "Yazi não encontrado" >&2; exit 1; }
+
+
 
 base="$HOME"
 filename="$(basename -- "$path")"
@@ -76,6 +78,7 @@ esac
 
 kitty --single-instance=no \
     --class=filechooser \
+    --class yazi-float \
     --title="Selecionar - ${extension:-ficheiro}" \
     "$ya" "$start" \
     --chooser-file="$tmp" \
